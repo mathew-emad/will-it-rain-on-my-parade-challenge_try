@@ -107,7 +107,7 @@ export default function App() {
         precipitation: validRain
       };
 
-      const backendResponse = await fetch("http://127.0.0.1:8000/predict", {
+      const backendResponse = await fetch("https://MatthewEmad.pythonanywhere.com/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
