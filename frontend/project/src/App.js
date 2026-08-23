@@ -107,7 +107,7 @@ export default function App() {
         precipitation: validRain
       };
 
-      const backendResponse = await fetch("https://will-it-rain-on-my-parade-challenge-vtqv5moxv-wirop.vercel.app/", {
+      const backendResponse = await fetch("/" , {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
