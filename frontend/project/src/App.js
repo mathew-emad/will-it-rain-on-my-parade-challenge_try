@@ -107,7 +107,7 @@ export default function App() {
         precipitation: validRain
       };
 
-      const backendResponse = await fetch("/" , {
+      const backendResponse = await fetch("/predict" , {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
