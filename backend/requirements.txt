@@ -1,0 +1,16 @@
+requests
+pandas
+numpy
+time
+joblib
+sklearn.model_selection
+sklearn.preprocessing
+sklearn.metrics
+sklearn.linear_model
+sklearn.ensemble
+sklearn.ensemble
+fastapi
+fastapi.middleware.cors
+pydantic
+joblib
+os
