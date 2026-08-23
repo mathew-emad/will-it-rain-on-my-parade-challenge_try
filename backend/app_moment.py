@@ -6,6 +6,7 @@ import numpy as np
 import os
 
 app = FastAPI(title="NASA Weather Prediction API")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,13 +14,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-print("Loading models and scalers...")
-rain_model = joblib.load("best_rain_model.pkl")
-rain_scaler = joblib.load("rain_scaler.pkl")
-temp_model = joblib.load("best_temp_model.pkl")
-temp_scaler = joblib.load("temp_scaler.pkl")
 
-with open("best_threshold.txt", "r") as f:
+# تحديد المسار المطلق للمجلد الذي يحتوي على النماذج والملفات
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+print("Loading models and scalers...")
+rain_model = joblib.load(os.path.join(BASE_DIR, "best_rain_model.pkl"))
+rain_scaler = joblib.load(os.path.join(BASE_DIR, "rain_scaler.pkl"))
+temp_model = joblib.load(os.path.join(BASE_DIR, "best_temp_model.pkl"))
+temp_scaler = joblib.load(os.path.join(BASE_DIR, "temp_scaler.pkl"))
+
+with open(os.path.join(BASE_DIR, "best_threshold.txt"), "r") as f:
     BEST_THRESHOLD = float(f.read().strip())
 
 class WeatherInput(BaseModel):
@@ -34,10 +39,12 @@ class WeatherInput(BaseModel):
     precipitation: float
 
 @app.get("/")
+@app.get("/api")
 def home():
     return {"message": "NASA Weather API is running successfully!"}
 
 @app.post("/predict")
+@app.post("/api/predict")
 def predict_weather(data: WeatherInput):
     rain_features = np.array([[
         data.temperature, data.humidity, data.wind_speed,
@@ -47,6 +54,7 @@ def predict_weather(data: WeatherInput):
     rain_scaled = rain_scaler.transform(rain_features)
     rain_prob = rain_model.predict_proba(rain_scaled)[:, 1][0]
     is_raining = int(rain_prob >= BEST_THRESHOLD)
+    
     temp_features = np.array([[
         data.humidity, data.wind_speed, data.precipitation,
         data.hum_lag1, data.wind_lag1,
@@ -61,4 +69,3 @@ def predict_weather(data: WeatherInput):
         "will_it_rain": bool(is_raining),
         "threshold_used": BEST_THRESHOLD    
     }
-# py -m uvicorn app_moment:app --reload
