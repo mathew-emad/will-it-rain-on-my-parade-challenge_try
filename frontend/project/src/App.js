@@ -107,7 +107,7 @@ export default function App() {
         precipitation: validRain
       };
 
-      const backendResponse = await fetch("https://MatthewEmad.pythonanywhere.com/predict", {
+      const backendResponse = await fetch("https://will-it-rain-on-my-parade-challenge-vtqv5moxv-wirop.vercel.app/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
