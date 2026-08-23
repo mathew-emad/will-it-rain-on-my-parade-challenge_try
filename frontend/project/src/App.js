@@ -107,10 +107,10 @@ export default function App() {
         precipitation: validRain
       };
 
-      const backendResponse = await fetch("/predict" , {
+        const backendResponse = await fetch("/api/predict", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+        "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
       });
